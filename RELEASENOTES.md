@@ -1,5 +1,6 @@
 # Release notes #
 
+
 ### 2.7.3 ###
 
 * Fix ProGuard configuration for Cast, IMA and OkHttp extensions.
