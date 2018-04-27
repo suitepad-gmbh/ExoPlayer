@@ -183,7 +183,7 @@ public final class H264Reader implements ElementaryStreamReader {
           output.format(Format.createVideoSampleFormat(formatId, MimeTypes.VIDEO_H264, null,
               Format.NO_VALUE, Format.NO_VALUE, spsData.width, spsData.height, Format.NO_VALUE,
               initializationData, Format.NO_VALUE, spsData.pixelWidthAspectRatio, null));
-          hasOutputFormat = true;
+          sampleReader.hasOutputFormat = hasOutputFormat = true;
           sampleReader.putSps(spsData);
           sampleReader.putPps(ppsData);
           sps.reset();
@@ -243,6 +243,7 @@ public final class H264Reader implements ElementaryStreamReader {
     private long samplePosition;
     private long sampleTimeUs;
     private boolean sampleIsKeyframe;
+    private boolean hasOutputFormat;
 
     public SampleReader(TrackOutput output, boolean allowNonIdrKeyframes,
         boolean detectAccessUnits) {
@@ -433,7 +434,8 @@ public final class H264Reader implements ElementaryStreamReader {
     }
 
     private void outputSample(int offset) {
-      @C.BufferFlags int flags = sampleIsKeyframe ? C.BUFFER_FLAG_KEY_FRAME : 0;
+//      @C.BufferFlags int flags = sampleIsKeyframe ? C.BUFFER_FLAG_KEY_FRAME : 0;
+      @C.BufferFlags int flags = (sampleIsKeyframe || allowNonIdrKeyframes && hasOutputFormat) ? C.BUFFER_FLAG_KEY_FRAME : 0;
       int size = (int) (nalUnitStartPosition - samplePosition);
       output.sampleMetadata(sampleTimeUs, flags, size, offset, null);
     }

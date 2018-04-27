@@ -549,7 +549,7 @@ import java.util.Collections;
       if (playWhenReady) {
         startRenderers();
       }
-    } else if (playbackInfo.playbackState == Player.STATE_READY
+    } else if (!ExoPlayer.LIVE_STREAM && playbackInfo.playbackState == Player.STATE_READY
         && !(enabledRenderers.length == 0 ? isTimelineReady() : renderersReadyOrEnded)) {
       rebuffering = playWhenReady;
       setState(Player.STATE_BUFFERING);

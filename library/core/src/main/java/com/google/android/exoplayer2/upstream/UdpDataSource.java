@@ -115,6 +115,7 @@ public final class UdpDataSource implements DataSource {
     }
 
     try {
+      socket.setReceiveBufferSize(188 * 340 * 100 * 100);
       socket.setSoTimeout(socketTimeoutMillis);
     } catch (SocketException e) {
       throw new UdpDataSourceException(e);
